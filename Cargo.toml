@@ -1,0 +1,10 @@
+[package]
+name = "percona-data-federation-server"
+description = "A data federation server by Percona with a focus on MongoDB"
+version = "0.1.0"
+license = "Apache-2.0"
+edition = "2024"
+readme = "README.md"
+repository = "https://github.com/Percona-Lab/percona-data-federation-server"
+
+[dependencies]
