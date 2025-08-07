@@ -1,0 +1,39 @@
+name: Quality Assurance
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout the source code
+        uses: actions/checkout@v4
+
+        # this step is a prerequisite for checking the formatting;
+        # the produced artifacts will be reused when running the tests
+      - name: check that the code is syntactically correct
+        run: cargo check --all-targets --verbose
+
+      - name: check that the code is properly formatted
+        run: cargo fmt --all --check --verbose
+
+      - name: scan the project for unused dependencies
+        run: |
+          cargo install cargo-machete
+          cargo machete
+
+      - name: run static analysis of the code
+        run: cargo clippy --no-deps
+
+      - name: run the unit and integration tests
+        run: cargo test --no-fail-fast --verbose
