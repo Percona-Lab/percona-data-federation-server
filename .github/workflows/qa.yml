@@ -1,0 +1,29 @@
+name: Quality Assurance
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  QA:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: syntax check
+        run: cargo check --all-targets --verbose
+
+      - name: formatting check
+        run: cargo fmt --all --check --verbose
+
+      - name: unit and integration tests
+        run: cargo test --verbose
