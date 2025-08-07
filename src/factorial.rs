@@ -1,5 +1,5 @@
 pub fn compute(n: u128) -> u128 {
-    (1..n + 1).product()
+    (1..n+1).product()
 }
 
 #[cfg(test)]
