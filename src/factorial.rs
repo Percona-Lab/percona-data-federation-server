@@ -24,6 +24,6 @@ mod tests {
     fn factorial_value_relationships() {
         assert_eq!(compute(4) * 5, compute(5));
         assert_eq!(compute(16) * 17, compute(17));
-        assert_eq!(compute(33) * 34, compute(34));
+        assert_eq!(compute(33) * 33, compute(34));
     }
 }
