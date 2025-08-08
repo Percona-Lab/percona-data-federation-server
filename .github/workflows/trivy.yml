@@ -1,0 +1,32 @@
+name: Scan for Vulenrabilities
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  scan_for_vulnerabilities:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: scan for vulnerabilities
+        uses: aquasecurity/trivy-action@0.32.0
+        with:
+          scan-type: 'repo'
+          scanners: 'vuln,misconfig,secret,license'
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: upload scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3.29.7
+        with:
+          sarif_file: 'trivy-results.sarif'
