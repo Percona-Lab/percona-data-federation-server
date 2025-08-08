@@ -1,0 +1,52 @@
+name: Security Audit
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/Cargo.toml'
+      - '**/Cargo.lock'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**/Cargo.toml'
+      - '**/Cargo.lock'
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  rustsec_audit_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout the source code
+        uses: actions/checkout@v4
+
+      - name: generate the lockfile
+        # https://github.com/rustsec/audit-check/issues/27
+        run: if [ ! -e "./Cargo.lock" ]; then cargo generate-lockfile; fi
+
+      - name: run audit-check
+        uses: rustsec/audit-check@v2.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout the source code
+        uses: actions/checkout@v4
+
+      - name: generate the lockfile
+        run: if [ ! -e "./Cargo.lock" ]; then cargo generate-lockfile; fi
+
+      - name: run trivy
+        uses: aquasecurity/trivy-action@0.32.0
+        with:
+          scan-type: 'repo'
+          scanners: 'vuln,misconfig,secret,license'
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true
+          exit-code: 1
