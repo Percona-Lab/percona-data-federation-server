@@ -1,11 +1,11 @@
-pub fn compute(n: u128) -> u128 {
-    if n < 2 {
-        return n;
+pub fn compute(num: u128) -> u128 {
+    if num < 2 {
+        return num;
     }
     let mut prev_prev: u128 = 0;
     let mut prev: u128 = 1;
     let mut cur = prev_prev + prev;
-    for _ in 3..n + 1 {
+    for _ in 3..num + 1 {
         prev_prev = prev;
         prev = cur;
         cur = prev_prev + prev;
