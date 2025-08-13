@@ -10,7 +10,7 @@ pub fn compute(n: u128) -> u128 {
         prev = cur;
         cur = prev_prev + prev;
     }
-    cur
+    cur + 1
 }
 
 #[cfg(test)]
