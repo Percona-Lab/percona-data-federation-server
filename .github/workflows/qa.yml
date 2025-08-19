@@ -13,7 +13,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  qa:
+  rs_tests:
     runs-on: ubuntu-latest
     steps:
       - name: checkout the source code
@@ -37,3 +37,25 @@ jobs:
 
       - name: run the unit and integration tests
         run: cargo test --no-fail-fast --verbose
+
+  py_tests:
+    runs-on: ubuntu-latest
+    needs: rs_tests
+    steps:
+      - name: checkout the source code
+        uses: actions/checkout@v4
+
+      - name: install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: install the pinned Python version
+        run: uv python install
+
+      - name: install the dependencies
+        run: uv sync --locked --all-extras --dev
+
+      - name: build the binary
+        run: cargo build
+
+      - name: run the functional tests on the binary
+        run: uv run pytest pytests
