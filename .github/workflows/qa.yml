@@ -50,6 +50,8 @@ jobs:
 
       - name: install uv
         uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
 
       - name: install the pinned Python version
         run: uv python install
