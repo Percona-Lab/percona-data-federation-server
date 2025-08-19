@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout the source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: cache and/or reuse compiled Rust dependencies
         uses: Swatinem/rust-cache@v2
@@ -46,7 +46,7 @@ jobs:
     needs: rs_tests
     steps:
       - name: checkout the source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: install uv
         uses: astral-sh/setup-uv@v6
