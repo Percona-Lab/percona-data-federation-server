@@ -19,6 +19,17 @@ jobs:
       - name: checkout the source code
         uses: actions/checkout@v4
 
+      - name: cache the Rust build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+
         # this step is a prerequisite for checking the formatting;
         # the produced artifacts will be reused when running the tests
       - name: check that the code is syntactically correct
@@ -37,14 +48,6 @@ jobs:
 
       - name: run the unit and integration tests
         run: cargo test --no-fail-fast --verbose
-
-      - name: cache the Rust build artifacts
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/
-            target/
-          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
 
   py_tests:
     runs-on: ubuntu-latest
@@ -66,7 +69,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/.cargo/
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
 
