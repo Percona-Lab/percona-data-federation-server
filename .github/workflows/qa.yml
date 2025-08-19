@@ -19,6 +19,9 @@ jobs:
       - name: checkout the source code
         uses: actions/checkout@v4
 
+      - name: cache and/or reuse compiled Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
         # this step is a prerequisite for checking the formatting;
         # the produced artifacts will be reused when running the tests
       - name: check that the code is syntactically correct
@@ -54,8 +57,11 @@ jobs:
       - name: install the dependencies
         run: uv sync --locked --all-extras --dev
 
+      - name: cache and/or reuse compiled Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
       - name: build the binary
-        run: cargo build
+        run: cargo build --verbose
 
       - name: run the functional tests on the binary
         run: uv run pytest pytests
