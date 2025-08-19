@@ -39,7 +39,7 @@ jobs:
         run: cargo test --no-fail-fast --verbose
 
       - name: cache the Rust build artifacts
-      - uses: actions/cache@v4
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/
@@ -62,8 +62,8 @@ jobs:
       - name: install the dependencies
         run: uv sync --locked --all-extras --dev
 
-      - name: reuse the Rust build artifacts
-      - uses: actions/cache@v4
+      - name: reuse the cached Rust build artifacts
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/
