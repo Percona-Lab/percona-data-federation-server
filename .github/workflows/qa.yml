@@ -19,16 +19,8 @@ jobs:
       - name: checkout the source code
         uses: actions/checkout@v4
 
-      - name: cache the Rust build artifacts
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+      - name: cache and/or reuse compiled Rust dependencies
+        uses: Swatinem/rust-cache@v2
 
         # this step is a prerequisite for checking the formatting;
         # the produced artifacts will be reused when running the tests
@@ -65,16 +57,8 @@ jobs:
       - name: install the dependencies
         run: uv sync --locked --all-extras --dev
 
-      - name: reuse the cached Rust build artifacts
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+      - name: cache and/or reuse compiled Rust dependencies
+        uses: Swatinem/rust-cache@v2
 
       - name: build the binary
         run: cargo build --verbose
