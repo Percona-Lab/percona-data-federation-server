@@ -9,3 +9,14 @@ repository = "https://github.com/Percona-Lab/percona-data-federation-server"
 
 [dependencies]
 serde_json = "1.0.142"
+
+[dev-dependencies]
+criterion = "0.7.0"
+
+[[bench]]
+name = "fibonacci"
+harness = false
+
+[[bench]]
+name = "factorial"
+harness = false
