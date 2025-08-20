@@ -28,6 +28,9 @@ jobs:
         # https://github.com/rustsec/audit-check/issues/27
         run: if [ ! -e "./Cargo.lock" ]; then cargo generate-lockfile; fi
 
+      - name: cache and/or reuse compiled Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
       - name: run audit-check
         uses: rustsec/audit-check@v2.0.0
         with:
